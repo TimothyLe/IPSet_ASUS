@@ -1329,6 +1329,7 @@ Print_Log() {
 	fi
 }
 
+#TODO periodic blacklist reset in skynetcfg
 Write_Config() {
 	{
 		printf '%s\n' "################################################"
@@ -3850,6 +3851,7 @@ case "$1" in
 		Load_IOTTables
 		Load_LogIPTables
 		sed -i '\~DROP IN=~d' "$syslog1loc" "$syslogloc" 2>/dev/null
+		#TODO recursion could interfere
 		if [ "$forcebanmalwareupdate" = "true" ]; then Write_Config; rm -rf "/tmp/skynet.lock"; exec "$0" banmalware; fi
 	;;
 
@@ -5666,6 +5668,7 @@ esac
 Spinner_End
 Display_Header "9"
 if [ "$nolog" != "2" ]; then Print_Log "$@"; echo; fi
+#TODO potential erase of skynetcfg
 if [ "$nocfg" != "1" ]; then Write_Config; fi
 if [ "$lockskynet" = "true" ]; then rm -rf "/tmp/skynet.lock"; fi
 if [ "$restartfirewall" = "1" ]; then service restart_firewall; echo; fi
